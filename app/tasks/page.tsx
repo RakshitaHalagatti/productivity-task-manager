@@ -5,7 +5,7 @@ export default function Tasks() {
         Task Management
       </h1>
 
-      <div className="bg-white p-6 rounded-lg shadow max-w-lg">
+      <div className="bg-white p-6 rounded-lg shadow max-w-xl">
         <input
           type="text"
           placeholder="Task Title"
@@ -17,21 +17,23 @@ export default function Tasks() {
           className="w-full p-3 border rounded mb-4"
         />
 
+        <select className="w-full p-3 border rounded mb-4">
+          <option>Select Category</option>
+          <option>Work</option>
+          <option>Personal</option>
+          <option>Study</option>
+        </select>
+
+        <select className="w-full p-3 border rounded mb-4">
+          <option>Select Priority</option>
+          <option>High</option>
+          <option>Medium</option>
+          <option>Low</option>
+        </select>
+
         <button className="bg-blue-600 text-white px-6 py-3 rounded">
           Add Task
         </button>
-      </div>
-
-      <div className="mt-8 bg-white p-6 rounded-lg shadow">
-        <h2 className="text-2xl font-bold mb-4">
-          My Tasks
-        </h2>
-
-        <ul>
-          <li>✅ Learn Next.js</li>
-          <li>✅ Create Login Page</li>
-          <li>⬜ Build Dashboard</li>
-        </ul>
       </div>
     </div>
   );
