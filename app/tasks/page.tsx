@@ -8,28 +8,45 @@ export default function Tasks() {
   const [category, setCategory] = useState("Work");
   const [priority, setPriority] = useState("Medium");
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
+
   const [tasks, setTasks] = useState<
     {
-  title: string;
-  description: string;
-  category: string;
-  priority: string;
-  completed: boolean;
-}[]
+      title: string;
+      description: string;
+      category: string;
+      priority: string;
+      completed: boolean;
+    }[]
   >([]);
 
   const addTask = () => {
     if (title.trim() === "") return;
 
-    const newTask = {
-      title,
-      description,
-      category,
-      priority,
-      completed: false,
-    };
+    if (editingIndex !== null) {
+      const updatedTasks = [...tasks];
 
-    setTasks([...tasks, newTask]);
+      updatedTasks[editingIndex] = {
+        ...updatedTasks[editingIndex],
+        title,
+        description,
+        category,
+        priority,
+      };
+
+      setTasks(updatedTasks);
+      setEditingIndex(null);
+    } else {
+      const newTask = {
+        title,
+        description,
+        category,
+        priority,
+        completed: false,
+      };
+
+      setTasks([...tasks, newTask]);
+    }
 
     setTitle("");
     setDescription("");
@@ -41,6 +58,10 @@ export default function Tasks() {
     const updatedTasks = [...tasks];
     updatedTasks[index].completed = true;
     setTasks(updatedTasks);
+  };
+
+  const deleteTask = (index: number) => {
+    setTasks(tasks.filter((_, i) => i !== index));
   };
 
   return (
@@ -89,7 +110,9 @@ export default function Tasks() {
           onClick={addTask}
           className="bg-blue-600 text-white px-6 py-3 rounded"
         >
-          Add Task
+          {editingIndex !== null
+            ? "Update Task"
+            : "Add Task"}
         </button>
       </div>
 
@@ -98,62 +121,80 @@ export default function Tasks() {
           My Tasks
         </h2>
 
+        <input
+          type="text"
+          placeholder="Search Tasks..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full p-3 border rounded mb-4"
+        />
+
         {tasks.length === 0 ? (
           <p>No tasks added yet.</p>
         ) : (
           <ul className="space-y-4">
-            {tasks.map((task, index) => (
-              <li
-                key={index}
-                className="border p-4 rounded"
-              >
-                <h3 className="font-bold text-lg">
-                  {task.completed ? "✅ " : ""}
-                  {task.title}
-                </h3>
-
-                <p>{task.description}</p>
-
-                <p>
-                  Category: {task.category}
-                </p>
-
-                <p>
-                  Priority: {task.priority}
-                </p>
-                <button
-  onClick={() => {
-    setTitle(task.title);
-    setDescription(task.description);
-    setCategory(task.category);
-    setPriority(task.priority);
-  }}
-  className="bg-yellow-500 text-white px-4 py-2 rounded mt-3 mr-2"
->
-  Edit
-</button>
-
-                {!task.completed && (
-                  <button
-                    onClick={() => completeTask(index)}
-                    className="bg-green-600 text-white px-4 py-2 rounded mt-3 mr-2"
-                  >
-                    Complete
-                  </button>
-                )}
-
-                <button
-                  onClick={() =>
-                    setTasks(
-                      tasks.filter((_, i) => i !== index)
-                    )
-                  }
-                  className="bg-red-500 text-white px-4 py-2 rounded mt-3"
+            {tasks
+              .filter((task) =>
+                task.title
+                  .toLowerCase()
+                  .includes(searchTerm.toLowerCase())
+              )
+              .map((task, index) => (
+                <li
+                  key={index}
+                  className="border p-4 rounded"
                 >
-                  Delete
-                </button>
-              </li>
-            ))}
+                  <h3 className="font-bold text-lg">
+                    {task.completed ? "✅ " : ""}
+                    {task.title}
+                  </h3>
+
+                  <p>{task.description}</p>
+
+                  <p>
+                    Category: {task.category}
+                  </p>
+
+                  <p>
+                    Priority: {task.priority}
+                  </p>
+
+                  <div className="mt-3">
+                    <button
+                      onClick={() => {
+                        setTitle(task.title);
+                        setDescription(task.description);
+                        setCategory(task.category);
+                        setPriority(task.priority);
+                        setEditingIndex(index);
+                      }}
+                      className="bg-yellow-500 text-white px-4 py-2 rounded mr-2"
+                    >
+                      Edit
+                    </button>
+
+                    {!task.completed && (
+                      <button
+                        onClick={() =>
+                          completeTask(index)
+                        }
+                        className="bg-green-600 text-white px-4 py-2 rounded mr-2"
+                      >
+                        Complete
+                      </button>
+                    )}
+
+                    <button
+                      onClick={() =>
+                        deleteTask(index)
+                      }
+                      className="bg-red-500 text-white px-4 py-2 rounded"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </li>
+              ))}
           </ul>
         )}
       </div>
