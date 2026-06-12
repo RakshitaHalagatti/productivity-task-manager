@@ -7,15 +7,15 @@ export default function Tasks() {
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("Work");
   const [priority, setPriority] = useState("Medium");
-
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [tasks, setTasks] = useState<
     {
-      title: string;
-      description: string;
-      category: string;
-      priority: string;
-      completed: boolean;
-    }[]
+  title: string;
+  description: string;
+  category: string;
+  priority: string;
+  completed: boolean;
+}[]
   >([]);
 
   const addTask = () => {
@@ -121,6 +121,17 @@ export default function Tasks() {
                 <p>
                   Priority: {task.priority}
                 </p>
+                <button
+  onClick={() => {
+    setTitle(task.title);
+    setDescription(task.description);
+    setCategory(task.category);
+    setPriority(task.priority);
+  }}
+  className="bg-yellow-500 text-white px-4 py-2 rounded mt-3 mr-2"
+>
+  Edit
+</button>
 
                 {!task.completed && (
                   <button
