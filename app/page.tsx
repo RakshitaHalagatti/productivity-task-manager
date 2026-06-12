@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Home() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 to-purple-600">
@@ -27,7 +29,9 @@ export default function Home() {
         </button>
 
         <p className="text-center mt-4 text-sm">
-          Don't have an account? Sign Up
+          <Link href="/signup" className="text-blue-600">
+            Don't have an account? Sign Up
+          </Link>
         </p>
       </div>
     </div>

@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Signup() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-green-400 to-blue-500">
@@ -34,9 +36,11 @@ export default function Signup() {
           className="w-full p-3 border rounded-lg mb-4"
         />
 
-        <button className="w-full bg-green-600 text-white p-3 rounded-lg">
-          Create Account
-        </button>
+        <Link href="/dashboard">
+          <button className="w-full bg-green-600 text-white p-3 rounded-lg">
+            Create Account
+          </button>
+        </Link>
       </div>
     </div>
   );
