@@ -24,10 +24,11 @@ export default function Home() {
           className="w-full p-3 border rounded-lg mb-4"
         />
 
-        <button className="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700">
-          Login
-        </button>
-
+  <Link href="/dashboard">
+  <button className="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700">
+    Login
+  </button>
+</Link>
         <p className="text-center mt-4 text-sm">
           <Link href="/signup" className="text-blue-600">
             Don't have an account? Sign Up

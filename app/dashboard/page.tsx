@@ -2,26 +2,57 @@ import Link from "next/link";
 
 export default function Dashboard() {
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
-      <h1 className="text-5xl font-bold text-center mb-8">
-        Productivity Dashboard
-      </h1>
+    <div
+  className="min-h-screen bg-cover bg-center p-8"
+  style={{
+    backgroundImage:
+      "url('https://images.unsplash.com/photo-1497366754035-f200968a6e72')",
+  }}
+>
 
-      <div className="flex justify-center mb-8">
-        <Link href="/tasks">
-          <button className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
-            Go To Tasks
-          </button>
+      {/* Navigation Bar */}
+      <nav className="bg-white rounded-xl shadow-lg p-4 mb-8 flex justify-center gap-6">
+        <Link
+          href="/dashboard"
+          className="font-semibold text-blue-600"
+        >
+          Dashboard
         </Link>
-      </div>
 
+  <Link
+  href="/tasks"
+  className="font-semibold text-gray-700 hover:text-purple-600 transition"
+>
+  Manage Tasks
+</Link>
+        <Link
+          href="/"
+          className="font-semibold text-red-600"
+        >
+          Logout
+        </Link>
+      </nav>
+
+      {/* Heading */}
+      <div className="bg-white/20 backdrop-blur-md rounded-3xl p-10 mb-8 text-center">
+  <h1 className="text-6xl font-bold text-white mb-4">
+    Productivity Dashboard 🚀
+  </h1>
+
+  <p className="text-xl text-white">
+    Organize your tasks and boost productivity
+  </p>
+</div>
+
+      {/* Statistics */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div className="bg-white p-6 rounded-xl shadow text-center">
+
+        <div className="bg-white/90 backdrop-blur-md p-8 rounded-3xl shadow-xl text-center hover:scale-105 transition">
           <h2 className="text-xl font-semibold">
             Total Tasks
           </h2>
           <p className="text-5xl mt-4 font-bold">
-            12
+            0
           </p>
         </div>
 
@@ -30,7 +61,7 @@ export default function Dashboard() {
             Completed
           </h2>
           <p className="text-5xl mt-4 font-bold text-green-600">
-            8
+            0
           </p>
         </div>
 
@@ -39,7 +70,7 @@ export default function Dashboard() {
             Pending
           </h2>
           <p className="text-5xl mt-4 font-bold text-red-600">
-            4
+            0
           </p>
         </div>
 
@@ -48,23 +79,23 @@ export default function Dashboard() {
             Progress
           </h2>
           <p className="text-5xl mt-4 font-bold text-blue-600">
-            67%
+            0%
           </p>
         </div>
+
       </div>
 
+      {/* Recent Tasks */}
       <div className="bg-white p-6 rounded-xl shadow">
-        <h2 className="text-3xl font-bold mb-6">
-          Recent Tasks
-        </h2>
+       <h2 className="text-3xl font-bold mb-6">
+  Recent Tasks
+</h2>
 
-        <ul className="space-y-4 text-lg">
-          <li>✅ Learn Next.js</li>
-          <li>✅ Create Login Page</li>
-          <li>⬜ Build Dashboard</li>
-          <li>⬜ Complete Internship Project</li>
-        </ul>
+<p className="text-gray-500">
+  No tasks available yet.
+</p>
       </div>
+
     </div>
   );
 }

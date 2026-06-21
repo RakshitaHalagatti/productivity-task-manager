@@ -1,6 +1,15 @@
 "use client";
-
+import Link from "next/link";
 import { useState } from "react";
+
+
+type Task = {
+  title: string;
+  description: string;
+  category: string;
+  priority: string;
+  completed: boolean;
+};
 
 export default function Tasks() {
   const [title, setTitle] = useState("");
@@ -9,17 +18,9 @@ export default function Tasks() {
   const [priority, setPriority] = useState("Medium");
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [filterPriority, setFilterPriority] = useState("All");
 
-  const [tasks, setTasks] = useState<
-    {
-      title: string;
-      description: string;
-      category: string;
-      priority: string;
-      completed: boolean;
-    }[]
-  >([]);
-
+  const [tasks, setTasks] = useState<Task[]>([]);
   const addTask = () => {
     if (title.trim() === "") return;
 
@@ -37,7 +38,7 @@ export default function Tasks() {
       setTasks(updatedTasks);
       setEditingIndex(null);
     } else {
-      const newTask = {
+      const newTask: Task = {
         title,
         description,
         category,
@@ -65,41 +66,58 @@ export default function Tasks() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
-      <h1 className="text-4xl font-bold mb-6">
-        Task Management
+    <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 p-8">
+      <Link
+  href="/dashboard"
+  className="inline-block mb-4 bg-white text-purple-600 px-4 py-2 rounded-xl font-semibold"
+>
+  ← Dashboard
+</Link>
+      <h1 className="text-5xl font-bold text-white mb-2">
+        🚀 Task Management
       </h1>
 
-      <div className="bg-white p-6 rounded-lg shadow max-w-xl mb-8">
-        <input
-          type="text"
-          placeholder="Task Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="w-full p-3 border rounded mb-4"
-        />
+      <p className="text-white text-lg mb-8">
+        Organize your daily tasks efficiently
+      </p>
+
+      <div className="bg-black/10 backdrop-blur-xl border border-white/20 p-8 rounded-3xl shadow-2xl max-w-4xl mb-8">
+        <h2 className="text-2xl font-bold text-white mb-6">
+          Create New Task
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input
+            type="text"
+            placeholder="📝 Task Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="bg-white text-gray-800 p-4 rounded-xl shadow-lg border-2 border-gray-200"
+          />
+
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="bg-white text-gray-800 p-4 rounded-xl shadow-lg border-2 border-gray-200"
+          >
+            <option>Work</option>
+            <option>Personal</option>
+            <option>Study</option>
+          </select>
+        </div>
 
         <textarea
-          placeholder="Task Description"
+          placeholder="📄 Task Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className="w-full p-3 border rounded mb-4"
+          rows={4}
+          className="w-full mt-4 bg-white text-gray-800 p-4 rounded-xl shadow-lg border-2 border-gray-200"
         />
-
-        <select
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          className="w-full p-3 border rounded mb-4"
-        >
-          <option>Work</option>
-          <option>Personal</option>
-          <option>Study</option>
-        </select>
 
         <select
           value={priority}
           onChange={(e) => setPriority(e.target.value)}
-          className="w-full p-3 border rounded mb-4"
+          className="w-full mt-4 bg-white text-gray-800 p-4 rounded-xl shadow-lg border-2 border-gray-200"
         >
           <option>High</option>
           <option>Medium</option>
@@ -108,58 +126,69 @@ export default function Tasks() {
 
         <button
           onClick={addTask}
-          className="bg-blue-600 text-white px-6 py-3 rounded"
+          className="w-full mt-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-xl font-semibold"
         >
-          {editingIndex !== null
-            ? "Update Task"
-            : "Add Task"}
+          {editingIndex !== null ? "Update Task" : "Add Task"}
         </button>
       </div>
 
-      <div className="bg-white p-6 rounded-lg shadow">
-        <h2 className="text-2xl font-bold mb-4">
-          My Tasks
-        </h2>
+      <div className="bg-white p-8 rounded-3xl shadow-2xl">
+        <h2 className="text-3xl font-bold mb-6">My Tasks</h2>
 
-        <input
-          type="text"
-          placeholder="Search Tasks..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full p-3 border rounded mb-4"
-        />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <input
+            type="text"
+            placeholder="🔍 Search Tasks..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="bg-white text-gray-800 p-4 rounded-xl shadow-lg border-2 border-gray-200"
+          />
+
+          <select
+            value={filterPriority}
+            onChange={(e) => setFilterPriority(e.target.value)}
+            className="bg-white text-gray-800 p-4 rounded-xl shadow-lg border-2 border-gray-200"
+          >
+            <option value="All">All Priorities</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+          </select>
+        </div>
 
         {tasks.length === 0 ? (
-          <p>No tasks added yet.</p>
+          <p className="text-gray-600">No tasks added yet.</p>
         ) : (
           <ul className="space-y-4">
             {tasks
-              .filter((task) =>
-                task.title
-                  .toLowerCase()
-                  .includes(searchTerm.toLowerCase())
+              .filter(
+                (task) =>
+                  task.title
+                    .toLowerCase()
+                    .includes(searchTerm.toLowerCase()) &&
+                  (filterPriority === "All" ||
+                    task.priority === filterPriority)
               )
               .map((task, index) => (
                 <li
                   key={index}
-                  className="border p-4 rounded"
+                  className="bg-gray-50 p-6 rounded-2xl shadow-lg"
                 >
-                  <h3 className="font-bold text-lg">
+                  <h3 className="font-bold text-xl mb-2">
                     {task.completed ? "✅ " : ""}
                     {task.title}
                   </h3>
 
-                  <p>{task.description}</p>
-
-                  <p>
-                    Category: {task.category}
+                  <p className="text-gray-600 mb-2">
+                    {task.description}
                   </p>
 
-                  <p>
-                    Priority: {task.priority}
+                  <p>📂 Category: {task.category}</p>
+                  <p className="mb-4">
+                    🔥 Priority: {task.priority}
                   </p>
 
-                  <div className="mt-3">
+                  <div className="flex gap-2 flex-wrap">
                     <button
                       onClick={() => {
                         setTitle(task.title);
@@ -168,27 +197,23 @@ export default function Tasks() {
                         setPriority(task.priority);
                         setEditingIndex(index);
                       }}
-                      className="bg-yellow-500 text-white px-4 py-2 rounded mr-2"
+                      className="bg-yellow-500 text-white px-4 py-2 rounded-lg"
                     >
                       Edit
                     </button>
 
                     {!task.completed && (
                       <button
-                        onClick={() =>
-                          completeTask(index)
-                        }
-                        className="bg-green-600 text-white px-4 py-2 rounded mr-2"
+                        onClick={() => completeTask(index)}
+                        className="bg-green-600 text-white px-4 py-2 rounded-lg"
                       >
                         Complete
                       </button>
                     )}
 
                     <button
-                      onClick={() =>
-                        deleteTask(index)
-                      }
-                      className="bg-red-500 text-white px-4 py-2 rounded"
+                      onClick={() => deleteTask(index)}
+                      className="bg-red-500 text-white px-4 py-2 rounded-lg"
                     >
                       Delete
                     </button>
